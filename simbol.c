@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-char simbol;
 
-void ukljucivanjeSimbola()
+int ukljucivanjeSimbola()
 {
-	if (simbol == 'X')
+	char simbol;
+	if (simbol == 'X' || simbol == 'x')
 	{
 		simbol = 'X';
 	}
