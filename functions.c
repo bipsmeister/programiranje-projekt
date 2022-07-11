@@ -82,7 +82,6 @@ bool nastavitiIgru() {
     char input;
     printf("Zelite li nastaviti igrati: Y/N > ");
 
-    // First discard the newlines in the input stdin stream
     scanf("%*c");       // Ili getchar()
 
     while(true) {
