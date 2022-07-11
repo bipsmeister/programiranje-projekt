@@ -17,51 +17,31 @@ int main() {
     igraci[1].igracIksOksZnak = IGRAC2_ZNAK;
 
     printf("Pravila igre: Postavi tri simbola u istom redu, stupcu ili po dijagonali kako bi pobjedio!\n");
-    printf("Koordinate: Reci su x E [1,3]; Stupci su y E [1,3]");
+    printf("Koordinate: Reci su x E [1,3]; Stupci su y E [1,3]\n");
     printf("Unesite ime prvog igraca:\n");
-    printf("Unesite ime drugog igraca:\n");
     scanf("%s", igraci[0].ime);
+    printf("Unesite ime drugog igraca:\n");
     scanf("%s", igraci[1].ime);
 
     printf("Igra krece!\n");
-    char buffer[1024];
-    int x, y;
-    igrac* trenutanIgrac = &igraci[0];
-    while (true) {
-        printf("%s na potezu --> upisite x:", trenutanIgrac->ime);
-        scanf("%d", &x);
-        printf(", upisite y:");
-        scanf("%d", &y);
-        printf("\n");
+    int trenutnaPartija = -1;
+    while(true) {
+        ++trenutnaPartija;
+        printf("Trenutna partija: %d\n", trenutnaPartija);
+        partija(polje, igraci);
 
-        if(!napraviPotez(polje, x, y, trenutanIgrac->igracIksOksZnak)) {
-            printf("Potez na toj poziciji nije moguce napraviti! Molimo odaberite drugu poziciju!\n");
+        bool nastavak = nastavitiIgru();
+        if(nastavak) {
             continue;
         } else {
-            // Provjeriti pobjedu
-            bool res = provjeriPobjedu(polje, trenutanIgrac->igracIksOksZnak);
-            if(res) {
-                // Pobjeda!
-                printf("Ovu rundu dobio je igrac %s!", trenutanIgrac->ime);
-                trenutanIgrac->score++;
-
-                bool nastavak = nastavitiIgru();
-                if(!nastavak) {
-                    izlazakIzIgre();
-                    return 0;
-                } else {
-
-                }
-            } else {
-                // Nije pobjeda, igra se nastavlja, mijenjamo igraca
-                if(trenutanIgrac == &igraci[0]) {
-                    trenutanIgrac = &igraci[1];
-                } else {
-                    trenutanIgrac = &igraci[0];
-                }
-                continue;
-            }
+            printf("Zavrsetak igre!\n");
+            break;
         }
+    }
+
+    // Kraj igre
+    for(int i = 0; i < 2; i++) {
+        printf("Igrac %d > Ime:%s, Znak:%c, Bodovi:%c\n", i, igraci[0].ime, igraci[0].igracIksOksZnak, igraci[0].score);
     }
 
     return 0;

@@ -56,6 +56,7 @@ bool provjeriPobjedu(char polje[3][3], char zadnjiIgracIksOksZnak) {
 
 /**
  * Proba napraviti potez. Prvo provjeri je li uopce legalan potez na x,y poziciji.
+ * Ukoliko je, napravi ga i vrati true. Inace ga ne napravi i vrati false.
  *
  * @param polje Iks-Oks polje
  * @param x Indeks retka E [1,3]
@@ -102,8 +103,50 @@ void resetiratiPolje(char polje[3][3]) {
     }
 }
 
+/**
+ * Simulira jednu partiju igre
+ *
+ * @param polje Iks Oks polje
+ * @param igraci Polje 2 igraca s njihovim podacima
+ */
 void partija(char polje[3][3], igrac igraci[2]) {
+    // Prvo treba resetirati polje
+    resetiratiPolje(polje);
 
+    int x, y;
+    igrac* trenutanIgrac = &igraci[0];
+    while (true) {
+        ispisiPlocu(polje);
+
+        printf("%s na potezu --> upisite x:", trenutanIgrac->ime);
+        scanf("%d", &x);
+        printf(", upisite y:");
+        scanf("%d", &y);
+        printf("\n");
+
+        if(!napraviPotez(polje, x, y, trenutanIgrac->igracIksOksZnak)) {
+            printf("Potez na toj poziciji nije moguce napraviti! Molimo odaberite drugu poziciju!\n");
+            continue;
+        } else {
+            // Provjeriti pobjedu
+            bool res = provjeriPobjedu(polje, trenutanIgrac->igracIksOksZnak);
+            if(res) {
+                // Pobjeda!
+                printf("Ovu rundu dobio je igrac %s!", trenutanIgrac->ime);
+                trenutanIgrac->score++;
+                ispisiPlocu(polje);
+                return;
+            } else {
+                // Nije pobjeda, igra se nastavlja, mijenjamo igraca
+                if(trenutanIgrac == &igraci[0]) {
+                    trenutanIgrac = &igraci[1];
+                } else {
+                    trenutanIgrac = &igraci[0];
+                }
+                continue;
+            }
+        }
+    }
 }
 
 void izlazakIzIgre() {
