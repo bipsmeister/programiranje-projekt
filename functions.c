@@ -120,6 +120,7 @@ void partija(char** polje, igrac* igraci, FILE* logFile, int* currWinStreak, cha
     int poljaPopunjeno = 0;
     int x, y;
     igrac* trenutanIgrac = &igraci[0];
+
     while (true) {
         ispisiPlocu(polje);
 
@@ -180,6 +181,9 @@ void partija(char** polje, igrac* igraci, FILE* logFile, int* currWinStreak, cha
 }
 
 void cleanUp(char** polje, igrac* igraci, FILE* logFile) {
+    free(igraci[0].ime);
+    free(igraci[1].ime);
+    
     free(igraci);
     for (int i = 0; i < 3; i++) {
         free(polje[i]);
