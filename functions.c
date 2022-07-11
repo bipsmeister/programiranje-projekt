@@ -89,9 +89,9 @@ bool nastavitiIgru() {
         scanf("%c", &input);
         printf("\n");
 
-        if(input == 'Y') {
+        if(input == 'Y' || 'y') {
             return true;
-        } else if(input == 'N') {
+        } else if(input == 'N' || 'n') {
             return false;
         } else {
             printf("Unijeli ste nedopusteni znak! Molimo unesite Y/N >");
@@ -126,6 +126,7 @@ void partija(char** polje, igrac* igraci, FILE* logFile, int* currWinStreak, cha
 
         printf("%s na potezu --> upisite x, y >", trenutanIgrac->ime);
         scanf("%d,%d", &x, &y);
+	system("cls");
 
         if(!napraviPotez(polje, x, y, trenutanIgrac->igracIksOksZnak)) {
             printf("Potez na toj poziciji nije moguce napraviti! Molimo odaberite drugu poziciju!\n");
