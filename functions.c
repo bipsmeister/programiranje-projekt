@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include "iks_oks.h"
 
-void ispisiPlocu(char polje[3][3])
+void ispisiPlocu(char** polje)
 {
 	printf("\n\t\t      Krizic kruzic igra      ");
     printf("\n\t\t|----------|-----------|---------|");
@@ -14,7 +14,7 @@ void ispisiPlocu(char polje[3][3])
     printf("\n\t\t|----------|-----------|---------|\n");
 }
 
-bool provjeriPobjedu(char polje[3][3], char zadnjiIgracIksOksZnak) {
+bool provjeriPobjedu(char** polje, char zadnjiIgracIksOksZnak) {
     /*
      * Prvo provjeriti sve retke(vodoravno)
      * Onda provjeriti sve stupce(okomito)
@@ -64,7 +64,7 @@ bool provjeriPobjedu(char polje[3][3], char zadnjiIgracIksOksZnak) {
  * @param igracIksOksZnak Iks Oks znak igraca koji je na potezu
  * @return true ak je potez napravljen, false ako nije
  */
-bool napraviPotez(char polje[3][3], int x, int y, char igracIksOksZnak) {
+bool napraviPotez(char** polje, int x, int y, char igracIksOksZnak) {
     if(x < 1 || x > 3 || y < 1 || y > 3) {
         return false;
     } else {
@@ -82,10 +82,10 @@ bool nastavitiIgru() {
     printf("Zelite li nastaviti igrati: Y/N > ");
 
     // First discard the newlines in the input stdin stream
-    scanf("%*c");       // Ili getchar()
+    scanf_s("%*c");       // Ili getchar()
 
     while(true) {
-        scanf("%c", &input);
+        scanf_s("%c", &input, 1);
         printf("\n");
 
         if(input == 'Y') {
@@ -98,7 +98,7 @@ bool nastavitiIgru() {
     }
 }
 
-void resetiratiPolje(char polje[3][3]) {
+void resetiratiPolje(char** polje) {
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
             polje[i][j] = PRAZNO_POLJE_ZNAK;
@@ -112,7 +112,7 @@ void resetiratiPolje(char polje[3][3]) {
  * @param polje Iks Oks polje
  * @param igraci Polje 2 igraca s njihovim podacima
  */
-void partija(char polje[3][3], igrac igraci[2]) {
+void partija(char** polje, igrac* igraci) {
     // Prvo treba resetirati polje
     resetiratiPolje(polje);
 
@@ -123,7 +123,7 @@ void partija(char polje[3][3], igrac igraci[2]) {
         ispisiPlocu(polje);
 
         printf("%s na potezu --> upisite x, y >", trenutanIgrac->ime);
-        scanf("%d,%d", &x, &y);
+        scanf_s("%d,%d", &x, &y);
 
         if(!napraviPotez(polje, x, y, trenutanIgrac->igracIksOksZnak)) {
             printf("Potez na toj poziciji nije moguce napraviti! Molimo odaberite drugu poziciju!\n");
@@ -156,8 +156,4 @@ void partija(char polje[3][3], igrac igraci[2]) {
             }
         }
     }
-}
-
-void izlazakIzIgre() {
-
 }
