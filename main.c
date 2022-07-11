@@ -23,7 +23,7 @@ int main() {
     printf("Unesite ime drugog igraca:\n");
     scanf("%s", igraci[1].ime);
 
-    printf("Igra krece!\n");
+    printf("Igra krece!\n\n");
     int trenutnaPartija = -1;
     while(true) {
         ++trenutnaPartija;
@@ -41,7 +41,7 @@ int main() {
 
     // Kraj igre
     for(int i = 0; i < 2; i++) {
-        printf("Igrac %d > Ime:%s, Znak:%c, Bodovi:%c\n", i, igraci[0].ime, igraci[0].igracIksOksZnak, igraci[0].score);
+        printf("Igrac %d > Ime:%s, Znak:%c, Bodovi:%d\n", i, igraci[0].ime, igraci[0].igracIksOksZnak, igraci[0].score);
     }
 
     return 0;

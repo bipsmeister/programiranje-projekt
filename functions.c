@@ -5,13 +5,13 @@
 void ispisiPlocu(char polje[3][3])
 {
 	printf("\n\t\t      Krizic kruzic igra      ");
-    printf("\n\t\t|---------|----------|--------|");
-	printf("\n\t\t|    %c   |    %c    |   %c   |", polje[0][0], polje[0][1], polje[0][2]);
-	printf("\n\t\t|---------|----------|--------|");
-    printf("\n\t\t|    %c   |    %c    |   %c   |", polje[1][0], polje[1][1], polje[1][2]);
-    printf("\n\t\t|---------|----------|--------|");
-    printf("\n\t\t|    %c   |    %c    |   %c   |", polje[2][0], polje[2][1], polje[2][2]);
-    printf("\n\t\t|---------|----------|--------|");
+    printf("\n\t\t|----------|-----------|---------|");
+	printf("\n\t\t|     %c    |     %c     |    %c    |", polje[0][0], polje[0][1], polje[0][2]);
+	printf("\n\t\t|----------|-----------|---------|");
+    printf("\n\t\t|     %c    |     %c     |    %c    |", polje[1][0], polje[1][1], polje[1][2]);
+    printf("\n\t\t|----------|-----------|---------|");
+    printf("\n\t\t|     %c    |     %c     |    %c    |", polje[2][0], polje[2][1], polje[2][2]);
+    printf("\n\t\t|----------|-----------|---------|\n");
 }
 
 bool provjeriPobjedu(char polje[3][3], char zadnjiIgracIksOksZnak) {
@@ -79,7 +79,10 @@ bool napraviPotez(char polje[3][3], int x, int y, char igracIksOksZnak) {
 
 bool nastavitiIgru() {
     char input;
-    printf("Zelite li nastaviti igrati: Y/N >");
+    printf("Zelite li nastaviti igrati: Y/N > ");
+
+    // First discard the newlines in the input stdin stream
+    scanf("%*c");       // Ili getchar()
 
     while(true) {
         scanf("%c", &input);
@@ -113,21 +116,21 @@ void partija(char polje[3][3], igrac igraci[2]) {
     // Prvo treba resetirati polje
     resetiratiPolje(polje);
 
+    int poljaPopunjeno = 0;
     int x, y;
     igrac* trenutanIgrac = &igraci[0];
     while (true) {
         ispisiPlocu(polje);
 
-        printf("%s na potezu --> upisite x:", trenutanIgrac->ime);
-        scanf("%d", &x);
-        printf(", upisite y:");
-        scanf("%d", &y);
-        printf("\n");
+        printf("%s na potezu --> upisite x, y >", trenutanIgrac->ime);
+        scanf("%d,%d", &x, &y);
 
         if(!napraviPotez(polje, x, y, trenutanIgrac->igracIksOksZnak)) {
             printf("Potez na toj poziciji nije moguce napraviti! Molimo odaberite drugu poziciju!\n");
             continue;
         } else {
+            poljaPopunjeno++;
+
             // Provjeriti pobjedu
             bool res = provjeriPobjedu(polje, trenutanIgrac->igracIksOksZnak);
             if(res) {
@@ -137,6 +140,12 @@ void partija(char polje[3][3], igrac igraci[2]) {
                 ispisiPlocu(polje);
                 return;
             } else {
+                // Provjeriti je li draw ako su sva polja popunjena i nitko nije pobijedio!
+                if(poljaPopunjeno == 9) {
+                    printf("Izjednacenje! Nijedan igrac nije pobijedio!\n");
+                    return;
+                }
+
                 // Nije pobjeda, igra se nastavlja, mijenjamo igraca
                 if(trenutanIgrac == &igraci[0]) {
                     trenutanIgrac = &igraci[1];
