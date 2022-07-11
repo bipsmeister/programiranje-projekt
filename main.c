@@ -2,13 +2,6 @@
 #include <stdbool.h>
 #include "iks_oks.h"
 
-typedef struct {
-    int score;
-    char ime[1024];
-    char igracIksOksZnak;
-} igrac;
-
-
 char polje[3][3] = {
         {PRAZNO_POLJE_ZNAK, PRAZNO_POLJE_ZNAK, PRAZNO_POLJE_ZNAK},
         {PRAZNO_POLJE_ZNAK, PRAZNO_POLJE_ZNAK, PRAZNO_POLJE_ZNAK},
@@ -35,22 +28,40 @@ int main() {
     int x, y;
     igrac* trenutanIgrac = &igraci[0];
     while (true) {
-        // Potez prvog igraca
-        while (true) {
-            printf("%s na potezu --> upisite x:", trenutanIgrac->ime);
-            scanf("%d", &x);
-            printf(", upisite y:");
-            scanf("%d", &y);
-            printf("\n");
+        printf("%s na potezu --> upisite x:", trenutanIgrac->ime);
+        scanf("%d", &x);
+        printf(", upisite y:");
+        scanf("%d", &y);
+        printf("\n");
 
-            if(!napraviPotez(polje, trenutanIgrac->igracIksOksZnak)) {
-                continue;
+        if(!napraviPotez(polje, x, y, trenutanIgrac->igracIksOksZnak)) {
+            printf("Potez na toj poziciji nije moguce napraviti! Molimo odaberite drugu poziciju!\n");
+            continue;
+        } else {
+            // Provjeriti pobjedu
+            bool res = provjeriPobjedu(polje, trenutanIgrac->igracIksOksZnak);
+            if(res) {
+                // Pobjeda!
+                printf("Ovu rundu dobio je igrac %s!", trenutanIgrac->ime);
+                trenutanIgrac->score++;
+
+                bool nastavak = nastavitiIgru();
+                if(!nastavak) {
+                    izlazakIzIgre();
+                    return 0;
+                } else {
+
+                }
             } else {
-
+                // Nije pobjeda, igra se nastavlja, mijenjamo igraca
+                if(trenutanIgrac == &igraci[0]) {
+                    trenutanIgrac = &igraci[1];
+                } else {
+                    trenutanIgrac = &igraci[0];
+                }
+                continue;
             }
         }
-
-
     }
 
     return 0;

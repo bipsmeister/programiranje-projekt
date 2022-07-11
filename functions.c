@@ -14,38 +14,38 @@ void ispisiPlocu(char polje[3][3])
     printf("\n\t\t|---------|----------|--------|");
 }
 
-bool provjeriPobjedu(char polje[3][3], char zadnjiIgrac) {
+bool provjeriPobjedu(char polje[3][3], char zadnjiIgracIksOksZnak) {
     /*
      * Prvo provjeriti sve retke(vodoravno)
      * Onda provjeriti sve stupce(okomito)
      * I zatim dvije dijagonale
      */
-    if(zadnjiIgrac != IGRAC1_ZNAK && zadnjiIgrac != IGRAC2_ZNAK) {
+    if(zadnjiIgracIksOksZnak != IGRAC1_ZNAK && zadnjiIgracIksOksZnak != IGRAC2_ZNAK) {
         return false;
     }
 
-    if(polje[0][0] == zadnjiIgrac && polje[0][1] == zadnjiIgrac && polje[0][2] == zadnjiIgrac) {
+    if(polje[0][0] == zadnjiIgracIksOksZnak && polje[0][1] == zadnjiIgracIksOksZnak && polje[0][2] == zadnjiIgracIksOksZnak) {
         // Prvi redak
         return true;
-    } else if(polje[1][0] == zadnjiIgrac && polje[1][1] == zadnjiIgrac && polje[1][2] == zadnjiIgrac) {
+    } else if(polje[1][0] == zadnjiIgracIksOksZnak && polje[1][1] == zadnjiIgracIksOksZnak && polje[1][2] == zadnjiIgracIksOksZnak) {
         // Drugi redak
         return true;
-    } else if(polje[2][0] == zadnjiIgrac && polje[2][1] == zadnjiIgrac && polje[2][2] == zadnjiIgrac) {
+    } else if(polje[2][0] == zadnjiIgracIksOksZnak && polje[2][1] == zadnjiIgracIksOksZnak && polje[2][2] == zadnjiIgracIksOksZnak) {
         // Treci redak
         return true;
-    } else if(polje[0][0] == zadnjiIgrac && polje[1][0] == zadnjiIgrac && polje[2][0] == zadnjiIgrac) {
+    } else if(polje[0][0] == zadnjiIgracIksOksZnak && polje[1][0] == zadnjiIgracIksOksZnak && polje[2][0] == zadnjiIgracIksOksZnak) {
         // Prvi stupac
         return true;
-    } else if(polje[0][1] == zadnjiIgrac && polje[1][1] == zadnjiIgrac && polje[2][1] == zadnjiIgrac) {
+    } else if(polje[0][1] == zadnjiIgracIksOksZnak && polje[1][1] == zadnjiIgracIksOksZnak && polje[2][1] == zadnjiIgracIksOksZnak) {
         // Drugi stupac
         return true;
-    } else if(polje[0][2] == zadnjiIgrac && polje[1][2] == zadnjiIgrac && polje[2][2] == zadnjiIgrac) {
+    } else if(polje[0][2] == zadnjiIgracIksOksZnak && polje[1][2] == zadnjiIgracIksOksZnak && polje[2][2] == zadnjiIgracIksOksZnak) {
         // Treci stupac
         return true;
-    } else if(polje[0][0] == zadnjiIgrac && polje[1][1] == zadnjiIgrac && polje[2][2] == zadnjiIgrac) {
+    } else if(polje[0][0] == zadnjiIgracIksOksZnak && polje[1][1] == zadnjiIgracIksOksZnak && polje[2][2] == zadnjiIgracIksOksZnak) {
         // Dijagonala '\'
         return true;
-    } else if(polje[0][2] == zadnjiIgrac && polje[1][1] == zadnjiIgrac && polje[2][0] == zadnjiIgrac) {
+    } else if(polje[0][2] == zadnjiIgracIksOksZnak && polje[1][1] == zadnjiIgracIksOksZnak && polje[2][0] == zadnjiIgracIksOksZnak) {
         // Dijagonala '/'
         return true;
     }
@@ -74,4 +74,38 @@ bool napraviPotez(char polje[3][3], int x, int y, char igracIksOksZnak) {
             return false;
         }
     }
+}
+
+bool nastavitiIgru() {
+    char input;
+    printf("Zelite li nastaviti igrati: Y/N >");
+
+    while(true) {
+        scanf("%c", &input);
+        printf("\n");
+
+        if(input == 'Y') {
+            return true;
+        } else if(input == 'N') {
+            return false;
+        } else {
+            printf("Unijeli ste nedopusteni znak! Molimo unesite Y/N >");
+        }
+    }
+}
+
+void resetiratiPolje(char polje[3][3]) {
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            polje[i][j] = PRAZNO_POLJE_ZNAK;
+        }
+    }
+}
+
+void partija(char polje[3][3], igrac igraci[2]) {
+
+}
+
+void izlazakIzIgre() {
+
 }
