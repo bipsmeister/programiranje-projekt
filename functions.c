@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "iks_oks.h"
 
 void ispisiPlocu(char** polje)
@@ -82,10 +83,10 @@ bool nastavitiIgru() {
     printf("Zelite li nastaviti igrati: Y/N > ");
 
     // First discard the newlines in the input stdin stream
-    scanf_s("%*c");       // Ili getchar()
+    scanf("%*c");       // Ili getchar()
 
     while(true) {
-        scanf_s("%c", &input, 1);
+        scanf("%c", &input);
         printf("\n");
 
         if(input == 'Y') {
@@ -112,7 +113,7 @@ void resetiratiPolje(char** polje) {
  * @param polje Iks Oks polje
  * @param igraci Polje 2 igraca s njihovim podacima
  */
-void partija(char** polje, igrac* igraci) {
+void partija(char** polje, igrac* igraci, FILE* logFile, int* currWinStreak, char* lastWinner) {
     // Prvo treba resetirati polje
     resetiratiPolje(polje);
 
@@ -123,7 +124,7 @@ void partija(char** polje, igrac* igraci) {
         ispisiPlocu(polje);
 
         printf("%s na potezu --> upisite x, y >", trenutanIgrac->ime);
-        scanf_s("%d,%d", &x, &y);
+        scanf("%d,%d", &x, &y);
 
         if(!napraviPotez(polje, x, y, trenutanIgrac->igracIksOksZnak)) {
             printf("Potez na toj poziciji nije moguce napraviti! Molimo odaberite drugu poziciju!\n");
@@ -138,11 +139,31 @@ void partija(char** polje, igrac* igraci) {
                 printf("Ovu rundu dobio je igrac %s!", trenutanIgrac->ime);
                 trenutanIgrac->score++;
                 ispisiPlocu(polje);
+
+                // Provjeriti winstreak ovdje i zapisati u datoteku ako treba
+                if (*lastWinner == trenutanIgrac->igracIksOksZnak) {
+                    // Povecati mu streak za jedan
+                    ++(*currWinStreak);
+                }
+                else {
+                    // Zapisati u datoteku, resetirati lastWinnera i winStreakCounter
+                    if (*currWinStreak > 0) {
+                        fprintf(logFile, "winstreak: %c, %d\n", *lastWinner, *currWinStreak);
+                    }
+                    
+                    *lastWinner = trenutanIgrac->igracIksOksZnak;
+                    *currWinStreak = 1;
+                }
+
                 return;
             } else {
                 // Provjeriti je li draw ako su sva polja popunjena i nitko nije pobijedio!
                 if(poljaPopunjeno == 9) {
                     printf("Izjednacenje! Nijedan igrac nije pobijedio!\n");
+
+                    // Resetirati winstreak
+                    *currWinStreak = 0;
+
                     return;
                 }
 
@@ -156,4 +177,13 @@ void partija(char** polje, igrac* igraci) {
             }
         }
     }
+}
+
+void cleanUp(char** polje, igrac* igraci, FILE* logFile) {
+    free(igraci);
+    for (int i = 0; i < 3; i++) {
+        free(polje[i]);
+    }
+    free(polje);
+    fclose(logFile);
 }
