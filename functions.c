@@ -88,9 +88,13 @@ bool nastavitiIgru() {
         scanf("%c", &input);
         printf("\n");
 
-        if(input == 'Y' || 'y') {
+        if(input == 'Y') {
             return true;
-        } else if(input == 'N' || 'n') {
+	} else if(input == 'y') {
+            return true;
+        } else if(input == 'N') {
+            return false;
+	} else if(input == 'n') {
             return false;
         } else {
             printf("Unijeli ste nedopusteni znak! Molimo unesite Y/N >");
